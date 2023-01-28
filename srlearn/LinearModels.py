@@ -16,7 +16,7 @@ class LinearRegression:
         self.e: float = float()
     
     
-    # Gradient descent function to optimize a weight
+    # function to get optimized weights
     def get_optimized_weights(self, x, y):
         try:
             w = np.linalg.inv(x.T @ x) @ x.T @ y
