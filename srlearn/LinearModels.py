@@ -16,7 +16,7 @@ class LinearRegression:
         self.e: float = float()
     
     
-    # function to get optimized weights
+    # function to calculate optimized weights
     def get_optimized_weights(self, x, y):
         try:
             w = np.linalg.inv(x.T @ x) @ x.T @ y
@@ -75,3 +75,43 @@ class LinearRegression:
                 raise TypeError("Can not convert the given data into numpy array")
         
         return np.array([round(sum(i*self.weights), 2)+self.e for i in x_test])
+    
+    
+
+    
+# Logistic Regression Class using Linear Regression as a parent
+class LogisticRegression(LinearRegression):
+    
+    def __init__(self):
+        super().__init__()
+    
+    def get_e(self, x, y, w):
+        
+        # euler's constant
+        exp = np.exp([1])[0]
+        
+        er = []
+        for i in range(len(x)):
+            y_ = 1/(1+exp**-(sum(x[i]*w)))
+            er.append(y[i] - y_)
+        return sum(er)/len(er)
+    
+    # Function to predict
+    def predict(self, x_test):
+        
+        # Function will predict the input vector array
+        """
+        x_test: numpy.ndarray
+        return: numpy.array
+        """
+                      
+        # euler's constant
+        exp = np.exp([1])[0]
+        
+        if type(x_test) != np.ndarray:
+            try:
+                x_test = np.array(x_test)
+            except:
+                raise TypeError("Can not convert the given data into numpy array")
+        
+        return np.array([round(1/(1+exp**(-(sum(i*self.weights) + self.e)))) for i in x_test])
